@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>QUBeditotron3000</title>
+
+    <script type="text/javascript">
+
+        let wordcountURL = "http://wordcount.editor.qpc.hal.davecutting.uk";
+        let charcountURL = "http://charcount.editor.qpc.hal.davecutting.uk";
+        let proxyURL = "http://proxy.40295079.qpc.hal.davecutting.uk/"
+        let lookupidURL = "http://textid.40295079.qpc.hal.davecutting.uk"
+
+        function Wordcount() {
+            CreateID();
+            CreateID();
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var j = JSON.parse(this.response);
+                    document.getElementById('output').value = j.answer;
+                }
+            };
+            let url = wordcountURL + "/?text=" + encodeURI(document.getElementById('content').value);
+            xhttp.open("GET", url);
+            xhttp.send();
+        }
+
+        function Charcount() {
+            CreateID();
+            CreateID();
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var j = JSON.parse(this.response);
+                    document.getElementById('output').value = j.answer;
+                }
+            };
+
+            let url = charcountURL + "/?text=" + encodeURI(document.getElementById('content').value);
+            xhttp.open("GET", url);
+            xhttp.send();
+        }
+
+        function VowelCount() {
+            CreateID();
+            CreateID();
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var j = JSON.parse(this.response);
+                    document.getElementById('output').value = j.answer;
+                }
+            };
+
+            let url = proxyURL + "vowelcount";
+
+            xhttp.open('POST', url, true);
+            xhttp.setRequestHeader('Content-type', 'application/json');
+            let req = JSON.stringify({ text: document.getElementById('content').value });
+            xhttp.send(req);
+        }
+
+        function PalindromeCheck() {
+            CreateID();
+            CreateID();
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var j = JSON.parse(this.response);
+                    document.getElementById('output').value = j.answer;
+                }
+            };
+
+            let url = proxyURL + "palindromecount";
+
+            xhttp.open('POST', url, true);
+            xhttp.setRequestHeader('Content-type', 'application/json');
+            let req = JSON.stringify({ text: document.getElementById('content').value });
+            xhttp.send(req);
+        }
+
+
+        function SpaceCount() {
+            CreateID();
+            CreateID();
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var j = JSON.parse(this.response);
+                    document.getElementById('output').value = j.answer;
+                }
+            };
+
+            let url = proxyURL + "spacecount";
+
+            xhttp.open('POST', url, true);
+            xhttp.setRequestHeader('Content-type', 'application/json');
+            let req = JSON.stringify({ text: document.getElementById('content').value });
+            xhttp.send(req);
+        }
+
+        function CommaCount(){
+            CreateID();
+            CreateID();
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var j = JSON.parse(this.response);
+                    document.getElementById('output').value = j.answer;
+                }
+                else {
+                    document.getElementById('output').value = "Error. Http Status code: 404";
+                }
+            };
+
+            let url = proxyURL + "comma";
+
+            xhttp.open('POST', url, true);
+            xhttp.setRequestHeader('Content-type', 'application/json');
+            let req = JSON.stringify({ text: document.getElementById('content').value });
+            xhttp.send(req);
+        }
+
+        function FindID() {
+                if (event.key == 'Enter') {
+                    let xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            var j = JSON.parse(this.response);
+                            document.getElementById('content').value = j.text;
+                            document.getElementById('textID').innerHTML = j.id;
+                        }
+                    };
+
+                    let url = lookupidURL + "/texts/" + encodeURI(document.getElementById('contentID').value);
+                    xhttp.open("GET", url);
+                    xhttp.send();
+                }
+
+            }
+
+        function CreateID(){
+            let xhttp_for_id = new XMLHttpRequest();
+            xhttp_for_id.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var j = JSON.parse(this.response);
+                    document.getElementById('textID').innerHTML = j.id;
+                }
+            };
+
+            let url = lookupidURL + "/texts";
+            xhttp_for_id.open('POST', url, true);
+            xhttp_for_id.setRequestHeader('Content-type', 'application/json');
+            let req = JSON.stringify({ text: document.getElementById('content').value });
+            xhttp_for_id.send(req);
+        }
+
+        
+
+    </script>
+
+    <style type="text/css">
+        body {
+            font-size: 150%;
+            font-family: monospace;
+        }
+
+        #logo {
+            font-family: Calibri, sans-serif;
+            font-weight: lighter;
+            color: #505050;
+            margin: 0.5em;
+        }
+
+        #editor {
+            text-align: center;
+            margin-top: 1em;
+        }
+
+        #output {
+            font-size: 100%;
+            padding: 0.2em;
+            margin: 0.2em;
+            font-family: monospace;
+            letter-spacing: 0.1em;
+        }
+
+        #content {
+            font-size: 100%;
+            padding: 0.2em;
+            margin: 0.2em;
+            font-family: monospace;
+            letter-spacing: 0.1em;
+        }
+
+        .operation {
+            border: solid #d0d0d0 1px;
+            background-color: #f0f0f0;
+            padding: 1.5em;
+            margin: 1em;
+            width: 14em;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="editor">
+        <div id="logo">
+            QUBeditotron3000
+        </div>
+
+        <div>
+            <fieldset
+                style="font-size: 100%; width: 300px; margin:0 auto; font-family: monospace; letter-spacing: 0.1em;">
+                <legend style="border: 1px black solid; margin-left: 1em; margin: auto; padding: 0.2em 0.8em "
+                    id="textID">ID</legend>
+                <textarea style="border: 0px;" rows="5" cols="40" id="content">Was it a car or a cat I saw</textarea>
+            </fieldset>
+        </div>
+
+        <div>
+            <fieldset style="font-size: 70%; width: 300px; margin:0 auto; font-family: monospace; letter-spacing: 0.1em;">
+                <legend style="border: 0px black solid; margin-left: 1em; margin: auto; padding: 0.2em 0.8em " id="textID">Enter ID (&#8626;)</legend>
+
+                    <input type="text" style="border: 0px; width: 250px;" id="contentID" placeholder="UniqueID" onkeydown="FindID()" >
+
+            </fieldset>
+        </div>
+
+        <div>
+            <input type="text" id="output" readonly="1" value="" />
+        </div>
+
+        <div>
+            <button class="operation" onclick="Wordcount();">Word Count</button>
+            <button class="operation" onclick="Charcount();">Character Count</button>
+        </div>
+        <div>
+            <button class="operation" onclick="VowelCount();">Vowel Count</button>
+            <button class="operation" onclick="PalindromeCheck();">Palindrome Check</button>
+        </div>
+        <div>
+            <button class="operation" onclick="SpaceCount();">Space Count</button>
+            <button class="operation" onclick="CommaCount();">Comma Count</button>
+        </div>
+       
+    </div>
+</body>
+
+
+</html>
